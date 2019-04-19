@@ -17,9 +17,13 @@ export class HotelService {
     }
     return this.http.get<Hotel[]>(this.hotelsUrl)
       .pipe(
-        tap(data => console.log(JSON.stringify(data))),
         tap(data => this.hotels = data)
         //catchError(this.handleError)
       );
+  }
+  getHotel(id: number): Observable<Hotel | undefined>{
+    return this.getHotels().pipe(
+      map((hotels: Hotel[]) => hotels.find(p => p.id == id))
+    );
   }
 }

@@ -13,7 +13,7 @@ const routes: Routes = [{
   component: HotelListComponent
 },
 {
-  path: 'edit',
+  path: 'hotels/edit/:id',
   component: HotelEditComponent
 },
 { path: '**', component: PageNotFoundComponent }

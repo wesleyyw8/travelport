@@ -17,6 +17,11 @@
       <td>{{hotel.hotelCity}}</td>
       <td>{{hotel.hotelPhoneNumber}}</td>
       <td>{{hotel.hotelStars}}</td>
+      <td>
+        <a
+          routerLink='/hotels/edit/{{hotel.id}}' 
+          class="btn btn-warning">Edit</a>
+      </td>
     </tr>
   </tbody>
 </table>
