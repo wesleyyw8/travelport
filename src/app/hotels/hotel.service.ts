@@ -10,7 +10,7 @@ import { catchError, tap, map } from 'rxjs/operators';
 })
 export class HotelService {
   private hotelsUrl = 'api/hotels';
-  private hotels: Hotel[];
+  public hotels: Hotel[];
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   constructor(private http: HttpClient) { }
   getHotels(): Observable<Hotel[]> {

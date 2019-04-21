@@ -17,13 +17,13 @@ export class HotelEditComponent implements OnInit, OnDestroy {
   errorMessage: string;
   getHotelSub: Subscription;
   pageTitle: string;
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private hotelService: HotelService,
     private router: Router,
     private route: ActivatedRoute) {
-   
+
   }
 
   ngOnInit() {
@@ -42,11 +42,6 @@ export class HotelEditComponent implements OnInit, OnDestroy {
     this.getHotelSub = this.hotelService.getHotel(id).subscribe(
       (hotel: Hotel) => this.displayHotel(hotel)
     );
-    // this.hotelForm.valueChanges.subscribe(
-    //   (value) => {
-    //     console.log(value);
-    //   }
-    // );
   }
   displayHotel(hotel: Hotel | null): void {
     this.hotel = hotel;
@@ -84,7 +79,7 @@ export class HotelEditComponent implements OnInit, OnDestroy {
         );
       }
     }
-  } 
+  }
   saveHotel(): void {
     if (this.hotelForm.valid) {
       if (this.hotelForm.dirty) {
