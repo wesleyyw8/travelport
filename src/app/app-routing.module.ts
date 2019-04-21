@@ -8,7 +8,7 @@ import { HotelEditComponent } from './hotels/hotel-edit/hotel-edit.component';
 const routes: Routes = [{
   path: '',
   component: MainComponent
-},{
+}, {
   path: 'hotels',
   component: HotelListComponent
 },

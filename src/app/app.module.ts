@@ -11,6 +11,7 @@ import { HotelListComponent } from './hotels/hotel-list/hotel-list.component';
 import { HotelData } from './hotels/hotel-data';
 import { HttpClientModule } from '@angular/common/http';
 import { HotelEditComponent } from './hotels/hotel-edit/hotel-edit.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,6 +25,8 @@ import { HotelEditComponent } from './hotels/hotel-edit/hotel-edit.component';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(HotelData),
