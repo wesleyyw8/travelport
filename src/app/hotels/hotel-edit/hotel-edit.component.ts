@@ -4,6 +4,7 @@ import { HotelService } from '../hotel.service';
 import { Hotel } from '../hotel';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { createOfflineCompileUrlResolver } from '@angular/compiler';
 
 @Component({
   selector: 'app-hotel-edit',
@@ -31,17 +32,18 @@ export class HotelEditComponent implements OnInit, OnDestroy {
         maxlength: 'hotel name cannot exceed 50 characters.'
       },
       hotelAddress: {
-        required: 'hotel name is required.',
-        minlength: 'hotel name must be at least three characters.',
-        maxlength: 'hotel name cannot exceed 50 characters.'
+        required: 'hotel address is required.',
+        minlength: 'hotel address must be at least three characters.',
+        maxlength: 'hotel address cannot exceed 50 characters.'
       },
       hotelCity: {
-        required: 'hotel name is required.',
-        minlength: 'hotel name must be at least three characters.',
-        maxlength: 'hotel name cannot exceed 50 characters.'
+        required: 'hotel city is required.',
+        minlength: 'hotel city must be at least three characters.',
+        maxlength: 'hotel city cannot exceed 50 characters.'
       },
       hotelPhoneNumber: {
-        required: 'hotel name is required.'
+        required: 'hotel phone number is required.',
+        minlength: 'hotel phone number must be at least three numbers.',
       },
       hotelStars: {
         range: 'Rate the hotel between 1 (lowest) and 5 (highest).'
@@ -53,11 +55,14 @@ export class HotelEditComponent implements OnInit, OnDestroy {
     const id = +this.route.snapshot.paramMap.get('id');
 
     this.hotelForm = this.formBuilder.group({
-      hotelName: ['', Validators.required],
-      hotelAddress: ['', [Validators.required]],
-      hotelPhoneNumber: ['', [Validators.required]],
-      hotelStars: ['', [Validators.required]],
-      hotelCity: ['', [Validators.required]]
+      hotelName:  ['', [Validators.required,
+        Validators.minLength(3)]],
+      hotelAddress:  ['', [Validators.required,
+        Validators.minLength(3)]],
+      hotelPhoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{3,12}')]],
+      hotelStars: ['', [Validators.required, Validators.pattern('[1-5]{1}')]],
+      hotelCity: ['', [Validators.required, Validators.minLength(3),
+      Validators.maxLength(50)]]
     });
 
     this.getHotelSub = this.hotelService.getHotel(id).subscribe(
@@ -80,18 +85,27 @@ export class HotelEditComponent implements OnInit, OnDestroy {
         hotelPhoneNumber: this.hotel.hotelPhoneNumber,
         hotelStars: this.hotel.hotelStars
       });
-    }
-    else {
+    } else {
       this.pageTitle = 'Add Hotel';
     }
-  }
-  blur(): void {
-    // this.displayMessage = this.genericValidator.processMessages(this.hotelForm);
   }
 
   ngOnDestroy(): void {
     this.getHotelSub.unsubscribe();
   }
+  deleteHotel(): void {
+    if (this.hotel) {
+      if (confirm(`Are you sure that you want to delete the hotel with the id: ${this.hotel.id}?`)) {
+        this.hotelService.deleteHotel(this.hotel.id).subscribe(
+          () => {
+            console.log('hotel deleted sucessful');
+            this.router.navigateByUrl('/hotels');
+          },
+          (err: any) => this.errorMessage = err.error
+        );
+      }
+    }
+  } 
   saveHotel(): void {
     if (this.hotelForm.valid) {
       if (this.hotelForm.dirty) {
@@ -102,7 +116,7 @@ export class HotelEditComponent implements OnInit, OnDestroy {
               console.log('hotel created sucessfful', hotel);
               this.router.navigateByUrl('/hotels');
             },
-            (err: any) => this.errorMessage = err.error
+            (err: any) => this.errorMessage = err.statusText
           );
         } else {
           this.hotelService.updateHotel(p).subscribe(
@@ -110,7 +124,8 @@ export class HotelEditComponent implements OnInit, OnDestroy {
               console.log('hotel updated', hotel);
               this.router.navigateByUrl('/hotels');
             },
-            (err: any) => this.errorMessage = err.error
+            (err: any) => this.errorMessage = err.statusText
+
           );
         }
       }

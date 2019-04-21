@@ -5,66 +5,60 @@
       <div class="form-group row">
         <label class="col-md-3 col-form-label" for="hotelNameId">Hotel Name</label>
         <div class="col-md-9">
-          <input [ngClass]="{'is-invalid': displayMessage.hotelName }" class="form-control" id="hotelNameId" type="text"
-            placeholder="Name (required)" formControlName="hotelName" (blur)="blur()" />
-          <span class="invalid-feedback" *ngIf="displayMessage.hotelName">
-            {{displayMessage.hotelName}}
-          </span>
+          <input class="form-control" id="hotelNameId" type="text" placeholder="Name (required)"
+            formControlName="hotelName" />
+
         </div>
       </div>
       <div class="form-group row">
         <label class="col-md-3 col-form-label" for="hotelAddressId">Hotel Address</label>
         <div class="col-md-9">
-          <input [ngClass]="{'is-invalid': displayMessage.hotelAddress }" class="form-control" id="hotelAddressId"
-            type="text" placeholder="Address (required)" formControlName="hotelAddress" (blur)="blur()" />
-          <span class="invalid-feedback" *ngIf="displayMessage.hotelAddress">
-            {{displayMessage.hotelAddress}}
-          </span>
+          <input class="form-control" id="hotelAddressId" type="text" placeholder="Address (required)"
+            formControlName="hotelAddress" />
+
         </div>
       </div>
       <div class="form-group row">
         <label class="col-md-3 col-form-label" for="hotelCityId">City</label>
         <div class="col-md-9">
-          <input [ngClass]="{'is-invalid': displayMessage.hotelCity }" class="form-control" id="hotelCityId" type="text"
-            placeholder="City (required)" formControlName="hotelCity" (blur)="blur()" />
-          <span class="invalid-feedback" *ngIf="displayMessage.hotelCity">
-            {{displayMessage.hotelCity}}
-          </span>
+          <input class="form-control" id="hotelCityId" type="text" placeholder="City (required)"
+            formControlName="hotelCity" />
+
+
         </div>
       </div>
       <div class="form-group row">
         <label class="col-md-3 col-form-label" for="hotelPhoneNumberId">Phone number</label>
         <div class="col-md-9">
-          <input [ngClass]="{'is-invalid': displayMessage.hotelPhoneNumber }" class="form-control"
-            id="hotelPhoneNumberId" type="text" placeholder="Phone Number (required)" formControlName="hotelPhoneNumber"
-            (blur)="blur()" />
-          <span class="invalid-feedback" *ngIf="displayMessage.hotelPhoneNumber">
-            {{displayMessage.hotelPhoneNumber}}
-          </span>
+          <input class="form-control" id="hotelPhoneNumberId" type="text" placeholder="Phone Number (required)"
+            formControlName="hotelPhoneNumber" />
         </div>
       </div>
       <div class="form-group row">
         <label class="col-md-3 col-form-label" for="hotelStarsId">Stars</label>
         <div class="col-md-9">
-          <input [ngClass]="{'is-invalid': displayMessage.hotelStars }" class="form-control" id="hotelStarsId"
-            type="text" placeholder="Stars (required)" formControlName="hotelStars" (blur)="blur()" />
-          <span class="invalid-feedback" *ngIf="displayMessage.hotelStars">
-            {{displayMessage.hotelStars}}
-          </span>
+          <input class="form-control" id="hotelStarsId" type="text" placeholder="Stars (required)"
+            formControlName="hotelStars" />
+
         </div>
       </div>
       <div class="form-group no-gutters">
-          <div class="col-md-12">
-            <span>
-              <button 
-                class="btn btn-primary" 
-                type="submit"
-                [disabled]="!hotelForm.valid || !hotelForm.dirty">
-                Save
+        <div class="col-md-12">
+          <span>
+            <button class="btn btn-primary" type="submit" [disabled]="!hotelForm.valid || !hotelForm.dirty">
+              Save
+            </button>
+          </span>
+          <span>
+              <button class="btn btn-danger ml-1"  *ngIf="hotel && hotel.id" (click)="deleteHotel()" >
+                Delete
               </button>
             </span>
-          </div>
         </div>
+      </div>
     </fieldset>
   </form>
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger">
+  Error: {{ errorMessage }}
 </div>

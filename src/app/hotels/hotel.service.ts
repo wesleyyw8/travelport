@@ -11,6 +11,7 @@ import { catchError, tap, map } from 'rxjs/operators';
 export class HotelService {
   private hotelsUrl = 'api/hotels';
   private hotels: Hotel[];
+  private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   constructor(private http: HttpClient) { }
   getHotels(): Observable<Hotel[]> {
     if (this.hotels) {
@@ -28,9 +29,12 @@ export class HotelService {
     );
   }
   createHotel(hotel: Hotel): Observable<Hotel> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    hotel.id = null;
-    return this.http.post<Hotel>(this.hotelsUrl, hotel, { headers })
+    if (this.hotels.length === 0) {
+      hotel.id = 1;
+    } else {
+      hotel.id = null;
+    }
+    return this.http.post<Hotel>(this.hotelsUrl, hotel, { headers: this.headers })
       .pipe(
         tap(data => console.log('createHotel: ' + JSON.stringify(data))),
         tap(data => {
@@ -40,9 +44,8 @@ export class HotelService {
       );
   }
   updateHotel(hotel: Hotel): Observable<Hotel> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const url = `${this.hotelsUrl}/${hotel.id}`;
-    return this.http.put<Hotel>(url, hotel, { headers })
+    return this.http.put<Hotel>(url, hotel, { headers: this.headers })
       .pipe(
         tap(() => console.log('updateHotel: ' + hotel.id)),
         tap(() => {
@@ -53,6 +56,20 @@ export class HotelService {
         }),
         // Return the product on an update
         map(() => hotel),
+        catchError(this.handleError)
+      );
+  }
+  deleteHotel(id: number): Observable<{}> {
+    const url = `${this.hotelsUrl}/${id}`;
+    return this.http.delete<Hotel>(url, { headers: this.headers })
+      .pipe(
+        tap(data => console.log('deleteProduct: ' + id)),
+        tap(data => {
+          const foundIndex = this.hotels.findIndex(item => item.id === id);
+          if (foundIndex > -1) {
+            this.hotels.splice(foundIndex, 1);
+          }
+        }),
         catchError(this.handleError)
       );
   }
