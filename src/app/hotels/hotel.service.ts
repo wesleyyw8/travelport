@@ -24,10 +24,21 @@ export class HotelService {
   }
   getHotel(id: number): Observable<Hotel | undefined> {
     return this.getHotels().pipe(
-      map((hotels: Hotel[]) => hotels.find(p => p.id == id))
+      map((hotels: Hotel[]) => hotels.find(p => p.id === id))
     );
   }
-
+  createHotel(hotel: Hotel): Observable<Hotel> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    hotel.id = null;
+    return this.http.post<Hotel>(this.hotelsUrl, hotel, { headers })
+      .pipe(
+        tap(data => console.log('createHotel: ' + JSON.stringify(data))),
+        tap(data => {
+          this.hotels.push(data);
+        }),
+        catchError(this.handleError)
+      );
+  }
   updateHotel(hotel: Hotel): Observable<Hotel> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const url = `${this.hotelsUrl}/${hotel.id}`;

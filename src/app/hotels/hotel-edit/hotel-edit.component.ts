@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../hotel.service';
 import { Hotel } from '../hotel';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,13 +13,16 @@ import { Subscription } from 'rxjs';
 export class HotelEditComponent implements OnInit, OnDestroy {
   hotel: Hotel;
   hotelForm: FormGroup;
+  errorMessage: string;
   displayMessage: { [key: string]: string } = {};
   private validationMessages: {};
   getHotelSub: Subscription;
+  pageTitle: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private hotelService: HotelService,
+    private router: Router,
     private route: ActivatedRoute) {
     this.validationMessages = {
       hotelName: {
@@ -65,9 +68,9 @@ export class HotelEditComponent implements OnInit, OnDestroy {
     this.hotel = hotel;
 
     if (this.hotel) {
+      this.pageTitle = 'Edit Hotel';
       // Reset the form back to pristine
       this.hotelForm.reset();
-
       // Update the data on the form
       this.hotelForm.patchValue({
         id: this.hotel.id,
@@ -77,6 +80,9 @@ export class HotelEditComponent implements OnInit, OnDestroy {
         hotelPhoneNumber: this.hotel.hotelPhoneNumber,
         hotelStars: this.hotel.hotelStars
       });
+    }
+    else {
+      this.pageTitle = 'Add Hotel';
     }
   }
   blur(): void {
@@ -89,29 +95,27 @@ export class HotelEditComponent implements OnInit, OnDestroy {
   saveHotel(): void {
     if (this.hotelForm.valid) {
       if (this.hotelForm.dirty) {
-        // Copy over all of the original hotel properties
-        // Then copy over the values from the form
-        // This ensures values not on the form, such as the Id, are retained
         const p = { ...this.hotel, ...this.hotelForm.value };
-
-        // if (p.id === 0) {
-        //   this.hotelService.createHotel(p).subscribe(
-        //     hotel => this.hotelService.changeSelectedHotel(product),
-        // //    (err: any) => this.errorMessage = err.error
-        //   );
-        // } else {
-        this.hotelService.updateHotel(p).subscribe(
-          (hotel) => {
-            console.log('hotel updated', hotel);
-          }
-          // (err: any) => this.errorMessage = err.error
-        );
-        // (err: any) => this.errorMessage = err.error
-        // );
-        // }
+        if (!p.id) {
+          this.hotelService.createHotel(p).subscribe(
+            hotel => {
+              console.log('hotel created sucessfful', hotel);
+              this.router.navigateByUrl('/hotels');
+            },
+            (err: any) => this.errorMessage = err.error
+          );
+        } else {
+          this.hotelService.updateHotel(p).subscribe(
+            (hotel) => {
+              console.log('hotel updated', hotel);
+              this.router.navigateByUrl('/hotels');
+            },
+            (err: any) => this.errorMessage = err.error
+          );
+        }
       }
     } else {
-      // this.errorMessage = 'Please correct the validation errors.';
+      this.errorMessage = 'Please correct the validation errors.';
     }
   }
 }

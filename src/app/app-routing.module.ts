@@ -16,6 +16,10 @@ const routes: Routes = [{
   path: 'hotels/edit/:id',
   component: HotelEditComponent
 },
+{
+  path: 'hotels/new',
+  component: HotelEditComponent
+},
 { path: '**', component: PageNotFoundComponent }
 ];
 
