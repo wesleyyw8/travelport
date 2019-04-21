@@ -15,45 +15,19 @@ export class HotelEditComponent implements OnInit, OnDestroy {
   hotel: Hotel;
   hotelForm: FormGroup;
   errorMessage: string;
-  displayMessage: { [key: string]: string } = {};
-  private validationMessages: {};
   getHotelSub: Subscription;
   pageTitle: string;
-
+  
   constructor(
     private formBuilder: FormBuilder,
     private hotelService: HotelService,
     private router: Router,
     private route: ActivatedRoute) {
-    this.validationMessages = {
-      hotelName: {
-        required: 'hotel name is required.',
-        minlength: 'hotel name must be at least three characters.',
-        maxlength: 'hotel name cannot exceed 50 characters.'
-      },
-      hotelAddress: {
-        required: 'hotel address is required.',
-        minlength: 'hotel address must be at least three characters.',
-        maxlength: 'hotel address cannot exceed 50 characters.'
-      },
-      hotelCity: {
-        required: 'hotel city is required.',
-        minlength: 'hotel city must be at least three characters.',
-        maxlength: 'hotel city cannot exceed 50 characters.'
-      },
-      hotelPhoneNumber: {
-        required: 'hotel phone number is required.',
-        minlength: 'hotel phone number must be at least three numbers.',
-      },
-      hotelStars: {
-        range: 'Rate the hotel between 1 (lowest) and 5 (highest).'
-      }
-    };
+   
   }
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
-
     this.hotelForm = this.formBuilder.group({
       hotelName:  ['', [Validators.required,
         Validators.minLength(3)]],
@@ -68,6 +42,11 @@ export class HotelEditComponent implements OnInit, OnDestroy {
     this.getHotelSub = this.hotelService.getHotel(id).subscribe(
       (hotel: Hotel) => this.displayHotel(hotel)
     );
+    // this.hotelForm.valueChanges.subscribe(
+    //   (value) => {
+    //     console.log(value);
+    //   }
+    // );
   }
   displayHotel(hotel: Hotel | null): void {
     this.hotel = hotel;

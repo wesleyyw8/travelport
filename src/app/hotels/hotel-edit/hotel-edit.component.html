@@ -6,15 +6,23 @@
         <label class="col-md-3 col-form-label" for="hotelNameId">Hotel Name</label>
         <div class="col-md-9">
           <input class="form-control" id="hotelNameId" type="text" placeholder="Name (required)"
+          [ngClass]="{ 'is-invalid': 
+            hotelForm.get('hotelName').invalid && 
+            (hotelForm.get('hotelName').dirty || hotelForm.get('hotelName').touched)
+          }" 
             formControlName="hotelName" />
-
         </div>
+      
       </div>
       <div class="form-group row">
         <label class="col-md-3 col-form-label" for="hotelAddressId">Hotel Address</label>
         <div class="col-md-9">
           <input class="form-control" id="hotelAddressId" type="text" placeholder="Address (required)"
-            formControlName="hotelAddress" />
+            formControlName="hotelAddress"
+            [ngClass]="{ 'is-invalid': 
+            hotelForm.get('hotelAddress').invalid && 
+            (hotelForm.get('hotelAddress').dirty || hotelForm.get('hotelAddress').touched)
+          }"  />
 
         </div>
       </div>
@@ -22,7 +30,12 @@
         <label class="col-md-3 col-form-label" for="hotelCityId">City</label>
         <div class="col-md-9">
           <input class="form-control" id="hotelCityId" type="text" placeholder="City (required)"
-            formControlName="hotelCity" />
+            formControlName="hotelCity"
+            [ngClass]="{ 'is-invalid': 
+            hotelForm.get('hotelCity').invalid && 
+            (hotelForm.get('hotelCity').dirty || hotelForm.get('hotelCity').touched)
+          }"
+             />
 
 
         </div>
@@ -31,14 +44,23 @@
         <label class="col-md-3 col-form-label" for="hotelPhoneNumberId">Phone number</label>
         <div class="col-md-9">
           <input class="form-control" id="hotelPhoneNumberId" type="text" placeholder="Phone Number (required)"
-            formControlName="hotelPhoneNumber" />
+            formControlName="hotelPhoneNumber"
+            [ngClass]="{ 'is-invalid': 
+            hotelForm.get('hotelPhoneNumber').invalid && 
+            (hotelForm.get('hotelPhoneNumber').dirty || hotelForm.get('hotelPhoneNumber').touched)
+          }" />
         </div>
       </div>
       <div class="form-group row">
         <label class="col-md-3 col-form-label" for="hotelStarsId">Stars</label>
         <div class="col-md-9">
           <input class="form-control" id="hotelStarsId" type="text" placeholder="Stars (required)"
-            formControlName="hotelStars" />
+            formControlName="hotelStars"
+            [ngClass]="{ 'is-invalid': 
+            hotelForm.get('hotelStars').invalid && 
+            (hotelForm.get('hotelStars').dirty || hotelForm.get('hotelStars').touched)
+          }"
+             />
 
         </div>
       </div>
@@ -59,6 +81,13 @@
     </fieldset>
   </form>
 </div>
+
+<br>Dirty: {{ hotelForm.dirty }}
+<br>Touched: {{ hotelForm.touched }}
+<br>valid: {{ hotelForm.valid }}
+<br>pristine: {{ hotelForm.pristine }}
+<br>Value: {{ hotelForm.value | json}}
+
 <div *ngIf="errorMessage" class="alert alert-danger">
   Error: {{ errorMessage }}
 </div>
