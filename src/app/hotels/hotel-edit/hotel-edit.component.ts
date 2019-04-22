@@ -22,9 +22,7 @@ export class HotelEditComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private hotelService: HotelService,
     private router: Router,
-    private route: ActivatedRoute) {
-
-  }
+    private route: ActivatedRoute) {}
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
